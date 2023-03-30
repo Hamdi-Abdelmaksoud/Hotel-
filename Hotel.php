@@ -88,7 +88,7 @@ class hotel
     public function informationsHotel()
     {
         $resultat = "<h1>" . $this->getNom() . " " . str_repeat("*", $this->getNombreEtoiles()) . " " . $this->getVille() . "</h1>";
-        $resultat .= "<br>" . $this->getAdresse() . " " . $this->getcodePostal() . " " . $this->getVille() . ">br>";
+        $resultat .= "<br>" . $this->getAdresse() . " " . $this->getcodePostal() . " " . $this->getVille() . "<br>";
         $resultat .= "Nombre de chambres : " . count($this->chambres) . "<br>";
         $resultat .= "Nombre de chambres reservées : " . count($this->reservations) . "<br>";
         $resultat .= "Nombre de chambre disponibles : " . count($this->chambres) - count($this->reservations);
@@ -98,22 +98,23 @@ class hotel
     public function reservations()
     {
         $resultat = "<h1>" . $this->getNom() . " " . str_repeat("*", $this->getNombreEtoiles()) . " " . $this->getVille() . "</h1> <br>";
-        $a = count($this->reservations);
-        if ($a = 0) {
+        $countReservations = count($this->reservations);
+        if ($countReservations == 0) {
             $resultat .= "Acune réservaton !";
         } else {
-            $resultat .= "<div style='color:white; background-color=green;'>$a Réservations </div>";
+            $resultat .= "<div style='color:black; background-color=green;'>$countReservations Réservations </div>";
             foreach ($this->reservations as $reservation) {
-                $resultat .= $reservation->getClient() . "- Chambre" . $reservation->getChambre() . "+ du" . $reservation->getDateEntree() . " -" . $reservation->getDateSortie()."<br> Total : ".$reservation->getPrix();
+                $resultat .= $reservation->getClient()."- Chambre" . $reservation->getChambre() . "+ du" . $reservation->getDateEntree()->format('Y-m-d') . " -" . $reservation->getDateSortie()->format('Y-m-d')."<br> Total : ".$reservation->getChambre()->getPrix();
             }
         }
+        return $resultat;
     }
     //-----------------------------------------------afficher status des chambres-------------------------------
     public function statusDesChambres()
     {
-        $resultat = "Status des chambre de <b>" ."<h1>" . $this->getNom() . " " . str_repeat("*", $this->getNombreEtoiles()) . " " . $this->getVille() . "</h1>". " :</b><br>";
-           echo "<style>th:nth-child(off){background-color=#ffff;}
-           th:nth-child(even){background-color=#eee;}</style>";
+        $resultat = "<style>th:nth-child(off){background-color=#ffff;}
+        th:nth-child(even){background-color=#eee;}</style>";
+        $resultat .= "<div>Status des chambre de <b>" ."<h1>" . $this->getNom() . " " . str_repeat("*", $this->getNombreEtoiles()) . " " . $this->getVille() . "</h1>". " </b><br>";
         
                 $resultat .= "<table border=1>
                             <thead>
@@ -129,7 +130,7 @@ class hotel
         foreach($this->chambres as $chambre)
         {
             $resultat.="<tr ><td> Chambre ".$chambre->getNumChambre()."</td><td>".$chambre->getPrix().'£ </td>';
-            if($chambre->getWifi)
+            if($chambre->getWifi())
             {
                 $resultat.="<td>oui</td>";
             }
@@ -137,15 +138,17 @@ class hotel
             {
                 $resultat.="<td>non</td>";
             }
-            if($chambre->getDisponible)
+            if($chambre->getDisponible())
             {
-                $resultat.="<td><div style='color:white; background-color=green;'>Disponible </div></td></tr>";
+                $resultat.="<td><div style='color:black; background-color=green;'>disponible </div></td></tr>";
             }
             else
              {
-                 $resultat.="<td><div style='color:white;background-color=red;'>Disponible </div></td></tr>";
+                 $resultat.="<td><div style='color:black;background-color=red;'>reservée </div></td></tr>";
             }
         }
+        $resultat.= "</tbody></table></div>";
+        return $resultat;
     }
     //--------------------------------------------------------Methode tostring---------------------------
      public function __toString()

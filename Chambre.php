@@ -9,7 +9,7 @@ class Chambre
     private bool $disponible;
 
     /*-------------- Méthode construct de la classe Chambre------------------- */
-    public function __construct(Hotel $hotel, int $numChambre, int $nbrLits, int $prix, string $wifi=false, bool $disponible=true)
+    public function __construct(Hotel $hotel, int $numChambre, int $nbrLits, int $prix, bool $wifi=false, bool $disponible=true)
     {
         $this->hotel = $hotel;
         $this->numChambre = $numChambre;
